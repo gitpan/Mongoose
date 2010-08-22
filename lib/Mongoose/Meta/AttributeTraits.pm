@@ -1,6 +1,11 @@
+package Mongoose::Meta::AttributeTraits;
+BEGIN {
+  $Mongoose::Meta::AttributeTraits::VERSION = '0.01_02';
+}
+
 package Mongoose::Meta::Attribute::Trait::Binary;
 BEGIN {
-  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.01_01';
+  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.01_02';
 }
 use strict;
 use Moose::Role;
@@ -21,7 +26,7 @@ has 'lazy_select' => (
 {
 	package Moose::Meta::Attribute::Custom::Trait::Binary;
 BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.01_01';
+  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.01_02';
 }
 	sub register_implementation {'Mongoose::Meta::Attribute::Trait::Binary'}
 }
@@ -30,7 +35,7 @@ BEGIN {
 
 package Mongoose::Meta::Attribute::Trait::DoNotSerialize;
 BEGIN {
-  $Mongoose::Meta::Attribute::Trait::DoNotSerialize::VERSION = '0.01_01';
+  $Mongoose::Meta::Attribute::Trait::DoNotSerialize::VERSION = '0.01_02';
 }
 use strict;
 use Moose::Role;
@@ -51,7 +56,7 @@ has 'lazy_select' => (
 {
 	package Moose::Meta::Attribute::Custom::Trait::DoNotSerialize;
 BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::DoNotSerialize::VERSION = '0.01_01';
+  $Moose::Meta::Attribute::Custom::Trait::DoNotSerialize::VERSION = '0.01_02';
 }
 	sub register_implementation {'Mongoose::Meta::Attribute::Trait::DoNotSerialize'}
 }
@@ -64,11 +69,11 @@ BEGIN {
 
 =head1 NAME
 
-Mongoose::Meta::AttributeTraits
+Mongoose::Meta::AttributeTraits - Mongoose related attribute traits
 
 =head1 VERSION
 
-version 0.01_01
+version 0.01_02
 
 =head1 DESCRIPTION
 

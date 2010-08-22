@@ -4,11 +4,28 @@ Mongoose::Cookbook - recipes, recipes
 
 =head1 VERSION
 
-version 0.01_01
+version 0.01_02
 
 =head1 RECIPES
 
 Here we go.
+
+=head2 Connecting to MongoDB
+
+Then connect to a database anywhere before starting to use your classes. 
+
+	use Mongoose;
+	Mongoose->db( 'mydb'); # looks for a localhost connection
+
+	# or, for more control:
+
+	Mongoose->db(
+		host=>'mongodb://data.server:4000',
+		db_name=>'mydb'
+	);           
+
+This is done globally here for simplicity sake, 
+but a more object oriented notation is also supported.
 
 =head2 Connecting to more than one database
 
@@ -29,6 +46,89 @@ In case your class has attributes you don't want to store in the database.
     has 'name' => ( is => 'rw', isa => 'Str', required => 1 );
     has 'age'  => ( is => 'rw', isa => 'Int', default  => 40 );
     has 'salary' => ( is => 'rw', isa => 'Int', traits => ['DoNotSerialize'] );
+
+=head2 One-to-many Relationships
+
+This can be accomplished several ways. 
+
+=head3 ArrayRef
+
+Use the C<ArrayRef> Moose type.
+
+	package Person;
+    use Moose;
+    with 'Mongoose::Document';
+    has 'name' => ( is => 'rw', isa => 'Str', required => 1 );
+    has 'accounts'  => ( is => 'rw', isa => 'ArrayRef[Account]' );
+
+Then, define the Account class, either as a document or embedded document, 
+depending on how you want it stored.
+
+	package Address;
+	use Moose;
+	with Mongoose::EmbeddedDocument;
+	has 'amount' => ...;
+
+But this has a memory and performance cost, since all related rows
+will be loaded in memory during object expansion.
+
+To avoid loading related rows, use a L<Mongoose::Join>
+parameterized type. 
+
+=head3 Mongoose::Join
+
+Establishing a Mongoose::Join relationship will load relationships
+lazily:
+
+	package Person;
+    use Moose; with 'Mongoose::Document';
+    has 'name' => ( is => 'rw', isa => 'Str', required => 1 );
+    has 'accounts'  => ( is => 'rw', isa => 'Mongoose::Join[Account]' );
+
+Then retrieve data with a cursor:
+
+	my $large_acc = $person->accounts->find({ amount => { '$gt' => 100000 } });
+	while( my $account = $large_acc->next ) {
+		...
+	}
+
+=head2 Sugar for Defining Relationships
+
+Use L<Mongoose::Class> instead of C<Moose>.
+
+	package Article;
+	use Mongoose::Class; with 'Mongoose::Document';
+	has 'title' => ( is=>'rw', isa=>'Str', required=>1 );
+	has_one 'author' => 'Author'; 
+	has_many 'comments' => 'Comment'; 
+	belongs_to => 'Account';
+
+=head2 Normalizing a Relationship
+
+Normalization is a relational concept, not natural to the
+document-oriented MongoDB, but an useful approach that
+should sometimes be taken into consideration. 
+
+Sometimes it may just be more adequate than storing relationships
+directly in objects:
+
+	package Authorship;
+	has_one 'author' => 'Author';
+	has_many 'articles' => 'Article';
+
+	package main;
+
+	# create
+	my $authorship = Authorship->new;
+	$authorship->author( Author->new );
+	$authorship->articles->add( Article->new );
+	$authorship->articles->add( Article->new );
+
+	# find
+	my $articles = Authorship->find_one({ author=>$author->_id });
+	while( my $article = $articles->next ) {
+		...
+	}
 
 =head2 Package aliasing
 

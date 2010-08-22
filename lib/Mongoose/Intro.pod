@@ -6,7 +6,7 @@ Mongoose::Intro - an introduction
 
 =head1 VERSION
 
-version 0.01_01
+version 0.01_02
 
 =head1 MOTIVATION
 
@@ -58,9 +58,8 @@ You feel adventurous.
 
 =back
 
-If you don't need any of this, go grab KiokuDB instead.
-It's much more configurable, stable and you get the option
-to switch backends in the future. 
+If you don't need any of this, go grab KiokuDB instead.  It's much more
+configurable, stable and you can painlessly switch backends in the future. 
 
 =head1 REQUIREMENTS
 
@@ -72,10 +71,16 @@ Grab a pre-built copy for your OS from
 L<here|http://www.mongodb.org/downloads>, or build it
 from L<sources|http://www.mongodb.org/display/DOCS/Source+Code>.
 
+After intalling the software, start the Mongo daemon:
+
+	mongod -dbpath /path/to/data
+
 =head2 The L<MongoDB> Perl driver
 
 	cpan MongoDB
 	cpan Mongoose
+
+Set the 
 
 =head2 Moose classes
 
@@ -160,7 +165,8 @@ if you wish.
 
 There are only two steps to start using Mongoose:
 
-1) Create at least one class that consumes a L<Mongoose::Document> tole.
+1) Create at least one class that consumes a L<Mongoose::Document> role.
+
 2) Connect to a Mongo database.
 
 MongoDB does not require you to previously create a database, a collection
@@ -171,8 +177,14 @@ one of two roles: L<Mongoose::Document> or L<Mongoose::EmbeddedDocument>.
 
 =head2 Turning your classes into Mongo Documents
 
+There are two roles to make your Moose class a Mongoose document:
+
+* L<Mongoose::Document> 
+
+* L<Mongoose::EmbeddedDocument> 
+
 The difference between these roles lies in the way objects
-will be later stored and loaded from the DB. 
+will be stored (collapsed) into the DB. 
 
 Read the MongoDB docs if you don't understand the difference. 
 
@@ -231,24 +243,34 @@ to switch quickly back to MongoDB hash documents.
 
 	Person->collection->find_one({ name=>'thyself' }); # ref = HASH
 
-=head2 Connecting 
+=head2 The Default Engine
 
-Then connect to a database anywhere before starting to use your classes. 
+Mongoose comes with a default engine, L<Mongoose::Engine::Base> that takes
+care of expanding and collapsing objects to and from the Mongo database.
 
-	use Mongoose;
-	Mongoose->db( 'mydb'); # looks for a localhost connection
+=head3 Collapsing
 
-	# or, for more control:
+Collapsing is the process of serializing classes. 
 
-	Mongoose->db(
-		host=>'mongodb://data.server:4000',
-		db_name=>'mydb'
-	);           
+Your Moose objects are collapsed by unblessing them until they become
+a hash. Relationships are mantained in the process.
 
-This is done globally here for simplicity sake, 
-but a more object oriented notation is also supported.
+=head3 Expanding
 
-=head1 Parameterization
+Expansion is the process of inflating Mongo documents (plain hashes)
+into Moose objects.
+
+This is done by inspecting the class attribute metadata. The base engine
+tries to do it's best identifying data types. The document is then C<bless>ed 
+into your class. This is faster than calling C<new>, but also means
+that no special attribute methods will be fired, 
+such as setters, triggers or coercion. You've been warned.  
+
+Naturally, there are many cases where
+this guesswork is not enough. These may be addressed in the future
+using attribute traits, but should be fine for most trivial classes.
+
+=head1 CONFIGURATION
 
 Mongoose roles are L<MooseX::Role::Parameterized|role parameterized>
 for greater flexibility.
@@ -287,7 +309,7 @@ C<Mongoose->naming> closure:
 		return lc $pkg;
 	});
 	
-=head3 Primary keys
+=head2 Primary keys
 
 The standard way MongoDB deals with primary keys is by using 
 the C<_id> attribute. By default, a L<MongoDB::OID> is assigned

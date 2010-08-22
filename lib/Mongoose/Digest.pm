@@ -1,6 +1,6 @@
 package Mongoose::Digest;
 BEGIN {
-  $Mongoose::Digest::VERSION = '0.01_01';
+  $Mongoose::Digest::VERSION = '0.01_02';
 }
 use Moose;
 use Digest::SHA;
@@ -33,15 +33,15 @@ use Digest::SHA;
 
 =head1 NAME
 
-Mongoose::Digest
+Mongoose::Digest - deprecated persistance document state keeper
 
 =head1 VERSION
 
-version 0.01_01
+version 0.01_02
 
 =head1 DESCRIPTION
 
-An object persistence state keeper using SHA 256 digest.
+An object persistence state keeper using a SHA 256 digest.
 
 Not used for now, due to performance reasons. 
 

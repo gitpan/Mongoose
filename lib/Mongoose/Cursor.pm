@@ -1,6 +1,6 @@
 package Mongoose::Cursor;
 BEGIN {
-  $Mongoose::Cursor::VERSION = '0.01_01';
+  $Mongoose::Cursor::VERSION = '0.01_02';
 }
 use Moose;
 use MongoDB;
@@ -41,18 +41,18 @@ sub each(&) {
 
 =head1 NAME
 
-Mongoose::Cursor
+Mongoose::Cursor - a Mongoose wrapper for MongoDB::Cursor
 
 =head1 VERSION
 
-version 0.01_01
+version 0.01_02
 
 =head1 DESCRIPTION
 
 Extends L<Mongoose::Cursor>. 
 
-Wraps L<MongoDB::Cursor>'s C<next> method, so that it expands 
-a document into a class.
+Wraps L<MongoDB::Cursor>'s C<next> and C<all>methods,
+so that it expands a document into a class.
 
 =head1 METHODS
 

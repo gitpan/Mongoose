@@ -1,6 +1,6 @@
 package Mongoose::Document;
 BEGIN {
-  $Mongoose::Document::VERSION = '0.01_01';
+  $Mongoose::Document::VERSION = '0.01_02';
 }
 use strict;
 use Mongoose;
@@ -62,11 +62,11 @@ role {
 
 =head1 NAME
 
-Mongoose::Document - A Mongo document role
+Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.01_01
+version 0.01_02
 
 =head1 SYNOPSIS
 
@@ -77,7 +77,7 @@ version 0.01_01
 
 =head1 SEE ALSO
 
-Read the Mongoose intro or cookbook. 
+Read the Mongoose L<Mongoose::Intro|intro> or L<Mongoose::Cookbook|cookbook>.
 
 =cut
 
