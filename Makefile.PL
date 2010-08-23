@@ -22,6 +22,7 @@ my %WriteMakefileArgs = (
   'PREREQ_PM' => {
     'Carp' => '0',
     'List::Util' => '0',
+    'Module::Pluggable' => '3.5',
     'MongoDB' => '0.35',
     'Moose' => '0.9',
     'MooseX::Role::Parameterized' => '0.16',
@@ -29,7 +30,7 @@ my %WriteMakefileArgs = (
     'Params::Coerce' => '0',
     'Scalar::Util' => '0'
   },
-  'VERSION' => '0.01_02',
+  'VERSION' => '0.01_03',
   'test' => {
     'TESTS' => 't/*.t'
   }

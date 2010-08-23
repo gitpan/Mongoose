@@ -1,6 +1,6 @@
 package Mongoose::Engine::Serialize;
 BEGIN {
-  $Mongoose::Engine::Serialize::VERSION = '0.01_02';
+  $Mongoose::Engine::Serialize::VERSION = '0.01_03';
 }
 use Moose::Role;
 use MooseX::Storage;
@@ -24,7 +24,7 @@ Mongoose::Engine::Serialize
 
 =head1 VERSION
 
-version 0.01_02
+version 0.01_03
 
 =head1 DESCRIPTION
 

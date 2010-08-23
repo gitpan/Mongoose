@@ -1,6 +1,6 @@
 package Mongoose::Engine::Base;
 BEGIN {
-  $Mongoose::Engine::Base::VERSION = '0.01_02';
+  $Mongoose::Engine::Base::VERSION = '0.01_03';
 }
 use Moose::Role;
 use Params::Coerce;
@@ -296,7 +296,7 @@ Mongoose::Engine::Base - heavy lifting done here
 
 =head1 VERSION
 
-version 0.01_02
+version 0.01_03
 
 =head1 DESCRIPTION
 
@@ -313,12 +313,14 @@ into your class package.
 =head2 find
 
 Just like L<MongoDB::Collection/find>, but returns
-a L<Mongoose::Cursor> of blessed documents.
+a L<Mongoose::Cursor> of documents blessed into
+your package.
 
 =head2 query
 
-Just like L<MongoDB::Collection/find>, but returns
-a L<Mongoose::Cursor> of blessed documents.
+Just like L<MongoDB::Collection/query>, but returns
+a L<Mongoose::Cursor> of documents blessed into
+your package.
 
 =head2 delete 
 

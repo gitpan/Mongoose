@@ -32,12 +32,14 @@ t/config.t
 t/embed.t
 t/join.t
 t/lib/MongooseT.pm
+t/lib/MyTestApp/Schema/Author.pm
 t/meta_attributes.t
 t/pk.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t
 t/request.t
 t/roles.t
+t/schema.t
 t/traits.t
 t/zdone.t
 xt/author/join.pl
