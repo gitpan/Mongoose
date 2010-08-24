@@ -1,13 +1,139 @@
+NAME
+    Mongoose - MongoDB document to Moose object mapper
 
+VERSION
+    version 0.01
 
-This archive contains the distribution Mongoose,
-version 0.01_03:
+SYNOPSIS
+        package Person;
+        use Moose;
+        with 'Mongoose::Document';
+        has 'name' => ( is => 'rw', isa => 'Str' );
 
-  MongoDB document to Moose object mapper
+        package main;
+        use Mongoose;
 
-This software is copyright (c) 2010 by Rodrigo de Oliveira.
+        Mongoose->db('mydb');
+        my $person = Person->new( name => 'Jack' );
+        $person->save;
 
-This is free software; you can redistribute it and/or modify it under
-the same terms as the Perl 5 programming language system itself.
+        my $person = Person->find_one( { name => 'Jack' } );
+        say $person->name;    # Jack
 
+        my $cursor = Person->find( { name => 'Jack' } );
+        die "Not found" unless defined $cursor;
+        while ( my $person = $cursor->next ) {
+            say "You're " . $person->name;
+        }
+
+        $person->delete;
+
+DESCRIPTION
+    This is a MongoDB to Moose object mapper. This module allows you to use
+    the full power of MongoDB within your Moose classes, without sacrificing
+    MongoDB's power, flexibility and speed.
+
+    It's loosely inspired by Ruby's MongoMapper, which is in turn loosely
+    based on the ActiveRecord pattern.
+
+    Start by reading the introduction Mongoose::Intro.
+
+    Or proceed directly to the Mongoose::Cookbook for many day-to-day
+    recipes.
+
+METHODS
+  db
+    Sets the current MongoDB connection and/or db name.
+
+            Mongoose->db( 'myappdb' );
+
+    The connection defaults to whatever MongoDB defaults are (typically
+    localhost:27017).
+
+    For more control over the connection, "db" takes the same parameters as
+    MongoDB::Connection, plus "db_name".
+
+        my $db = Mongoose->db(
+            host          => 'mongodb://localhost:27017',
+            query_timeout => 60,
+            db_name       => 'myapp'
+        );
+
+    This will, in turn, instantiate a MongoDB::Connection instance with all
+    given parameters and return a MongoDB::Database object.
+
+  load_schema
+    Uses Module::Pluggable to "require" all modules under a given search
+    path or search dir.
+
+    All arguments will be sent to Module::Pluggable's "import", except for
+    Mongoose specific ones.
+
+            package main;
+            use Mongoose;
+
+            # to load a schema from a namespace path:
+            Mongoose->load_schema( search_path=>'MyApp::Schema' );
+
+    This method can be used to shorten class names, aliasing them for
+    convenience if you wish:
+
+            Mongoose->load_schema( search_path=>'MyApp::Schema', shorten=>1 );
+
+    Will shorten the module name to it's last bit:
+
+            MyApp::Schema::Author->new( ... );
+
+            # becomes
+
+            Author->new( ... );
+
+  naming
+    By default, Mongoose composes the Mongo collection name from your
+    package name by replacing double-colon "::" with underscores "_",
+    separating camel-case, such as "aB" with "a_b" and uppercase with
+    lowercase letters.
+
+    This method let's you change this behaviour, by setting setting the
+    collection naming default sub.
+
+    The closure receives the package name as first parameter and should
+    return the collection name.
+
+        # let me change the naming strategy
+        #  for my mongo collections
+        #  to plain lowercase
+
+        Mongoose->naming( sub { lc(shift) } );
+
+  connection
+    Sets/returns the current connection object, of class
+    MongoDB::Connection.
+
+    Defaults to whatever MongoDB defaults.
+
+REPOSITORY
+    Fork me on github: <http://github.com/rodrigolive/mongoose>
+
+BUGS
+    This is a WIP, barely *beta* quality software.
+
+    Report bugs via RT. Send me test cases.
+
+TODO
+    * Better error control
+
+    * Finish-up multiple database support
+
+    * Allow query->fields to control which fields get expanded into the
+    object.
+
+    * Cleanup internals.
+
+    * More tests and use cases.
+
+    * Better documentation.
+
+SEE ALSO
+    KiokuDB
 

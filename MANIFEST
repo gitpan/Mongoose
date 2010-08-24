@@ -8,7 +8,6 @@ README
 README.banner
 dist.ini
 etc/mongoose_icon.png
-etc/mongoose_sword.png
 lib/Mongoose.pm
 lib/Mongoose/Class.pm
 lib/Mongoose/Cookbook.pod
@@ -34,6 +33,7 @@ t/join.t
 t/lib/MongooseT.pm
 t/lib/MyTestApp/Schema/Author.pm
 t/meta_attributes.t
+t/migrate.t
 t/pk.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t

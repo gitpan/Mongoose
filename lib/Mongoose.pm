@@ -1,6 +1,6 @@
 package Mongoose;
 BEGIN {
-  $Mongoose::VERSION = '0.01_03';
+  $Mongoose::VERSION = '0.01';
 }
 use MongoDB;
 use MooseX::Singleton;
@@ -76,7 +76,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.01_03
+version 0.01
 
 =head1 SYNOPSIS
 
@@ -105,7 +105,7 @@ version 0.01_03
 
 =head1 DESCRIPTION
 
-This is a MongoDB to Moose object mapper. This module allows you to use the full
+This is a L<MongoDB> to L<Moose> object mapper. This module allows you to use the full
 power of MongoDB within your Moose classes, without sacrificing MongoDB's
 power, flexibility and speed.
 
@@ -115,6 +115,12 @@ which is in turn loosely based on the ActiveRecord pattern.
 Start by reading the introduction L<Mongoose::Intro>. 
 
 Or proceed directly to the L<Mongoose::Cookbook> for many day-to-day recipes.
+
+=begin html
+
+<img src="http://cpansearch.perl.org/src/RODRIGO/Mongoose-0.01_02/etc/mongoose_icon.png" />
+
+=end html
 
 =head1 METHODS
 
