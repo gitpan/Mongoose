@@ -2,7 +2,7 @@ NAME
     Mongoose - MongoDB document to Moose object mapper
 
 VERSION
-    version 0.01
+    version 0.02
 
 SYNOPSIS
         package Person;
@@ -136,4 +136,11 @@ TODO
 
 SEE ALSO
     KiokuDB
+
+AUTHOR
+            Rodrigo de Oliveira (rodrigolive), C<rodrigolive@gmail.com>
+
+LICENSE
+    This library is free software. You can redistribute it and/or modify it
+    under the same terms as Perl itself.
 

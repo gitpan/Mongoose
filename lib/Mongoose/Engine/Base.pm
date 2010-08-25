@@ -1,6 +1,6 @@
 package Mongoose::Engine::Base;
 BEGIN {
-  $Mongoose::Engine::Base::VERSION = '0.01';
+  $Mongoose::Engine::Base::VERSION = '0.02';
 }
 use Moose::Role;
 use Params::Coerce;
@@ -19,11 +19,14 @@ sub collapse {
 		if first { refaddr($self) == refaddr($_) } @scope; #check for circularity
 	my $packed = { %$self }; # cheesely clone the data 
 	for my $key ( keys %$packed ) {
-		my $obj = $packed->{$key};
-		if( my $attrib = $self->meta->get_attribute($key) ) {
+		my $attrib = $self->meta->get_attribute($key);
+		if( defined $attrib ) {
 			delete $packed->{$key} , next
 				if $attrib->does('Mongoose::Meta::Attribute::Trait::DoNotSerialize');
+			next if $attrib->does('Mongoose::Meta::Attribute::Trait::Raw');
 		}
+
+		my $obj = $packed->{$key};
 		if( my $class =blessed $obj ) {
 			#say "checking.... $class....";
 			if( $class->can('meta') ) { # only mooses from here on 
@@ -87,7 +90,14 @@ sub expand {
 		my $class = $self->_get_blessed_type( $type );
 		$class or next;
 
-		if( $type->is_a_type_of('ArrayRef') ) {
+		if( defined $attr && $attr->does('Mongoose::Meta::Attribute::Trait::Raw') ) {
+			next;
+		}
+		elsif( $type->is_a_type_of('HashRef') ) {
+			# nothing to do on HASH
+			next;
+		}
+		elsif( $type->is_a_type_of('ArrayRef') ) {
 			my $array_class = $type->{type_parameter} . "";
 			#say "ary class $array_class";
 			my @objs;
@@ -103,10 +113,6 @@ sub expand {
 				}
 			}
 			$doc->{$name} = \@objs;
-			next;
-		}
-		elsif( $type->is_a_type_of('HashRef') ) {
-			# nothing to do on HASH
 			next;
 		}
 		#say "type=$type" . $type->is_a_type_of('ArrayRef');
@@ -296,7 +302,7 @@ Mongoose::Engine::Base - heavy lifting done here
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 DESCRIPTION
 

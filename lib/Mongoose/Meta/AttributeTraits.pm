@@ -1,11 +1,11 @@
 package Mongoose::Meta::AttributeTraits;
 BEGIN {
-  $Mongoose::Meta::AttributeTraits::VERSION = '0.01';
+  $Mongoose::Meta::AttributeTraits::VERSION = '0.02';
 }
 
 package Mongoose::Meta::Attribute::Trait::Binary;
 BEGIN {
-  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.01';
+  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.02';
 }
 use strict;
 use Moose::Role;
@@ -26,7 +26,7 @@ has 'lazy_select' => (
 {
 	package Moose::Meta::Attribute::Custom::Trait::Binary;
 BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.01';
+  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.02';
 }
 	sub register_implementation {'Mongoose::Meta::Attribute::Trait::Binary'}
 }
@@ -35,7 +35,7 @@ BEGIN {
 
 package Mongoose::Meta::Attribute::Trait::DoNotSerialize;
 BEGIN {
-  $Mongoose::Meta::Attribute::Trait::DoNotSerialize::VERSION = '0.01';
+  $Mongoose::Meta::Attribute::Trait::DoNotSerialize::VERSION = '0.02';
 }
 use strict;
 use Moose::Role;
@@ -56,9 +56,27 @@ has 'lazy_select' => (
 {
 	package Moose::Meta::Attribute::Custom::Trait::DoNotSerialize;
 BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::DoNotSerialize::VERSION = '0.01';
+  $Moose::Meta::Attribute::Custom::Trait::DoNotSerialize::VERSION = '0.02';
 }
 	sub register_implementation {'Mongoose::Meta::Attribute::Trait::DoNotSerialize'}
+}
+
+# -----------------------------------------------------------------
+
+{
+	package Mongoose::Meta::Attribute::Trait::Raw;
+BEGIN {
+  $Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.02';
+}
+	use strict;
+	use Moose::Role;
+}
+{
+	package Moose::Meta::Attribute::Custom::Trait::Raw;
+BEGIN {
+  $Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.02';
+}
+	sub register_implementation {'Mongoose::Meta::Attribute::Trait::Raw'}
 }
 
 #package Moose::Meta::Attribute::Custom::DoNotSerialize;
@@ -73,11 +91,19 @@ Mongoose::Meta::AttributeTraits - Mongoose related attribute traits
 
 =head1 VERSION
 
-version 0.01
+version 0.02
 
 =head1 DESCRIPTION
 
 All Moose attribute traits used by Mongoose are defined here.
+
+=head2 DoNotSerialize
+
+Makes Mongoose skip collapsing or expanding the attribute.
+
+=head2 Raw
+
+Skips unblessing of an attribute when saving an object. 
 
 =cut
 
