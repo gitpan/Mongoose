@@ -1,6 +1,6 @@
 package Mongoose::Document;
 BEGIN {
-  $Mongoose::Document::VERSION = '0.02';
+  $Mongoose::Document::VERSION = '0.03';
 }
 use strict;
 use Mongoose;
@@ -21,7 +21,6 @@ role {
     my $class_name = $args{consumer}->name;
 
     my $collection_name = $p->{'-collection_name'} || do {
-
         # sanitize the class name
         Mongoose->naming->($class_name);
     };
@@ -61,7 +60,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.02
+version 0.03
 
 =head1 SYNOPSIS
 

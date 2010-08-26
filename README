@@ -2,7 +2,7 @@ NAME
     Mongoose - MongoDB document to Moose object mapper
 
 VERSION
-    version 0.02
+    version 0.03
 
 SYNOPSIS
         package Person;
@@ -139,6 +139,9 @@ SEE ALSO
 
 AUTHOR
             Rodrigo de Oliveira (rodrigolive), C<rodrigolive@gmail.com>
+
+CONTRIBUTORS
+            Arthur Wolf
 
 LICENSE
     This library is free software. You can redistribute it and/or modify it

@@ -5,7 +5,6 @@ MANIFEST
 META.yml
 Makefile.PL
 README
-README.banner
 dist.ini
 etc/mongoose_icon.png
 lib/Mongoose.pm
@@ -17,6 +16,7 @@ lib/Mongoose/Document.pm
 lib/Mongoose/EmbeddedDocument.pm
 lib/Mongoose/Engine/Base.pm
 lib/Mongoose/Engine/Serialize.pm
+lib/Mongoose/File.pm
 lib/Mongoose/Intro.pod
 lib/Mongoose/Join.pm
 lib/Mongoose/Meta/AttributeTraits.pm
@@ -29,6 +29,8 @@ t/basic.t
 t/binary_tree.t
 t/config.t
 t/embed.t
+t/file/in.txt
+t/gridfs.t
 t/join.t
 t/lib/MongooseT.pm
 t/lib/MyTestApp/Schema/Author.pm
