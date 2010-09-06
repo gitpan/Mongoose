@@ -1,11 +1,11 @@
 package Mongoose::Meta::AttributeTraits;
 BEGIN {
-  $Mongoose::Meta::AttributeTraits::VERSION = '0.03';
+  $Mongoose::Meta::AttributeTraits::VERSION = '0.04';
 }
 
 package Mongoose::Meta::Attribute::Trait::Binary;
 BEGIN {
-  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.03';
+  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.04';
 }
 use strict;
 use Moose::Role;
@@ -26,7 +26,7 @@ has 'lazy_select' => (
 {
 	package Moose::Meta::Attribute::Custom::Trait::Binary;
 BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.03';
+  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.04';
 }
 	sub register_implementation {'Mongoose::Meta::Attribute::Trait::Binary'}
 }
@@ -35,7 +35,7 @@ BEGIN {
 
 package Mongoose::Meta::Attribute::Trait::DoNotSerialize;
 BEGIN {
-  $Mongoose::Meta::Attribute::Trait::DoNotSerialize::VERSION = '0.03';
+  $Mongoose::Meta::Attribute::Trait::DoNotSerialize::VERSION = '0.04';
 }
 use strict;
 use Moose::Role;
@@ -56,7 +56,7 @@ has 'lazy_select' => (
 {
 	package Moose::Meta::Attribute::Custom::Trait::DoNotSerialize;
 BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::DoNotSerialize::VERSION = '0.03';
+  $Moose::Meta::Attribute::Custom::Trait::DoNotSerialize::VERSION = '0.04';
 }
 	sub register_implementation {'Mongoose::Meta::Attribute::Trait::DoNotSerialize'}
 }
@@ -66,7 +66,7 @@ BEGIN {
 {
 	package Mongoose::Meta::Attribute::Trait::Raw;
 BEGIN {
-  $Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.03';
+  $Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.04';
 }
 	use strict;
 	use Moose::Role;
@@ -74,7 +74,7 @@ BEGIN {
 {
 	package Moose::Meta::Attribute::Custom::Trait::Raw;
 BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.03';
+  $Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.04';
 }
 	sub register_implementation {'Mongoose::Meta::Attribute::Trait::Raw'}
 }
@@ -91,7 +91,7 @@ Mongoose::Meta::AttributeTraits - Mongoose related attribute traits
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 DESCRIPTION
 

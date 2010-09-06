@@ -43,10 +43,13 @@ t/request.t
 t/roles.t
 t/schema.t
 t/traits.t
+t/types.t
 t/zdone.t
+xt/author/hashes.pl
 xt/author/join.pl
 xt/author/join2.pl
 xt/author/mgcoll.pm
+xt/author/ref.pl
 xt/author/t1.pl
 xt/author/t2.pl
 xt/author/t3.pl

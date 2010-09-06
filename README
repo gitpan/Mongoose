@@ -2,7 +2,7 @@ NAME
     Mongoose - MongoDB document to Moose object mapper
 
 VERSION
-    version 0.03
+    version 0.04
 
 SYNOPSIS
         package Person;

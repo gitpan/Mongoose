@@ -1,5 +1,8 @@
 package Mongoose::Engine::Base;
 BEGIN {
+  $Mongoose::Engine::Base::VERSION = '0.04';
+}
+BEGIN {
   $Mongoose::Engine::Base::VERSION = '0.03';
 }
 use Moose::Role;
@@ -38,32 +41,11 @@ sub collapse {
 		}
 
 		my $obj = $packed->{$key};
-		if( my $class =blessed $obj ) {
+		if( my $class = blessed $obj ) {
 			#say "checking.... $class....";
-			if( $class->can('meta') ) { # only mooses from here on 
-				if( $class->does('Mongoose::EmbeddedDocument') ) {
-					$packed->{$key} = $obj->collapse( @scope, $self ) or next;
-				}
-				elsif( $class->does('Mongoose::Document') ) {
-					$obj->save( @scope, $self );
-					my $id = $obj->_id;
-					$packed->{$key} = { '$ref' => $class->meta->{mongoose_config}->{collection_name}, '$id'=>$id };
-				} 
-				elsif( $class->isa('Mongoose::Join') ) {
-					my @objs = $obj->_save( $self, @scope );
-					$packed->{$key} = \@objs;
-				} 
-			} else {
-				my $reftype = reftype($obj);
-				if( $reftype eq 'ARRAY' ) {
-					$packed->{$key} = [ @$obj ];
-				} elsif( $reftype eq 'SCALAR' ) {
-					$packed->{$key} = $$obj;
-				} elsif( $reftype eq 'HASH' ) {
-					$packed->{$key} = { %{$obj} };
-				}
-			}
-		} elsif( ref $obj eq 'ARRAY' ) {
+			$packed->{$key} = $self->_unbless( $obj, $class, @scope ); 
+		}
+		elsif( ref $obj eq 'ARRAY' ) {
 			my @docs;
 			my $aryclass;
 			for( @$obj ) {
@@ -79,9 +61,45 @@ sub collapse {
 				}
 			}
 			$packed->{$key} = \@docs;
-		} 
+		}
+		elsif( ref $obj eq 'HASH' ) {
+			my @docs;
+			for my $key ( grep { blessed $obj->{$_} } keys %$obj ) {
+				$obj->{$key} = $self->_unbless( $obj->{$key}, blessed($obj->{$key}), @scope );; 
+			}
+		}
 	}
 	return $packed;
+}
+
+sub _unbless {
+	my ($self, $obj, $class, @scope ) = @_;
+	my $ret = $obj;
+			if( $class->can('meta') ) { # only mooses from here on 
+				if( $class->does('Mongoose::EmbeddedDocument') ) {
+					$ret = $obj->collapse( @scope, $self ) or next;
+				}
+				elsif( $class->does('Mongoose::Document') ) {
+					$obj->save( @scope, $self );
+					my $id = $obj->_id;
+					$ret = { '$ref' => $class->meta->{mongoose_config}->{collection_name}, '$id'=>$id };
+				} 
+				elsif( $class->isa('Mongoose::Join') ) {
+					my @objs = $obj->_save( $self, @scope );
+					$ret = \@objs;
+				} 
+			} else {
+				# non-moose class
+				my $reftype = reftype($obj);
+				if( $reftype eq 'ARRAY' ) {
+					$ret = [ @$obj ];
+				} elsif( $reftype eq 'SCALAR' ) {
+					$ret = $$obj;
+				} elsif( $reftype eq 'HASH' ) {
+					$ret = { %{$obj} };
+				}
+			}
+	return $ret;
 }
 
 sub expand {
@@ -90,7 +108,16 @@ sub expand {
 	my $config = $self->meta->{mongoose_config};
 	my $coll_name = $config->{collection_name};
 	my $class_main = ref $self || $self;
+
 	$scope = {} unless ref $scope eq 'HASH';
+
+	# check if it's an straight ref
+	if( defined $doc->{'$id'} ) {
+		my $ref_id = $doc->{'$id'};
+		defined $scope->{$ref_id} and return $scope->{$ref_id};
+		return $class_main->find_one({ _id=>$doc->{'$id'} });
+	}
+
 	for my $attr ( $class_main->meta->get_all_attributes ) {
 		my $name = $attr->name;
 		next unless exists $doc->{$name};
@@ -102,8 +129,48 @@ sub expand {
 			next;
 		}
 		elsif( $type->is_a_type_of('HashRef') ) {
-			# nothing to do on HASH
-			next;
+			if( defined $type->{type_parameter} ) {
+				# HashRef[ parameter ]
+				my $param = $type->{type_parameter};
+				if( my $param_class = $param->{class} ) {
+					for my $key ( keys %{ $doc->{$name} || {} } ) {
+						$doc->{$name}->{$key} = $param_class->expand( $doc->{$name}->{$key}, undef, $scope );
+					}
+					next;
+				} else {
+					next;
+				}
+			} else {
+				# nothing to do on pure HASH
+				next;
+			}
+		}
+		elsif( $type->is_a_type_of('ArrayRef') ) {
+			if( defined $type->{type_parameter} ) {
+				# ArrayRef[ parameter ]
+				my @objs;
+				my $param = $type->{type_parameter};
+				if( my $param_class = $param->{class} ) {
+					for my $item ( @{ $doc->{$name} || [] } ) {
+						if( my $_id = delete $item->{'$id'} ) {
+							if( my $circ_doc = $scope->{ $_id } ) {
+								push @objs, bless( $circ_doc , $param_class );
+							} else {	
+								#$scope->{ $_id } = $doc->{
+								my $ary_obj = $param_class->find_one({ _id=>$_id }, undef, $scope );
+								push @objs, $ary_obj if defined $ary_obj;
+							}
+						}
+					}
+				} else {
+					@objs = @{ $doc->{$name} || [] };
+				}
+				$doc->{$name} = \@objs;
+				next;
+			} else {
+				# ARRAY
+				next;
+			}
 		}
 		elsif( $type->is_a_type_of('FileHandle') ) {
 			my $file = $self->db->get_gridfs->find_one({ _id=>$doc->{$name}->{'$id'} });
@@ -111,24 +178,7 @@ sub expand {
 			$doc->{$name} = bless $file, 'Mongoose::File';
 			next;
 		}
-		elsif( $type->is_a_type_of('ArrayRef') ) {
-			my $array_class = $type->{type_parameter} . "";
-			#say "ary class $array_class";
-			my @objs;
-			for my $item ( @{ $doc->{$name} || [] } ) {
-				if( my $_id = delete $item->{'$id'} ) {
-					if( my $circ_doc = $scope->{ $_id } ) {
-						push @objs, bless( $circ_doc , $array_class );
-					} else {	
-						push @$scope, $doc; 
-						my $ary_obj = $array_class->find_one({ _id=>$_id }, undef, $scope );
-						push @objs, $ary_obj if defined $ary_obj;
-					}
-				}
-			}
-			$doc->{$name} = \@objs;
-			next;
-		}
+
 		if( $class->can('meta') ) { # moose subobject
 
 			if( $class->does('Mongoose::EmbeddedDocument') ) {
@@ -148,7 +198,9 @@ sub expand {
 			elsif( $class->isa('Mongoose::Join') ) {
 				my $ref_arr = delete( $doc->{$name} );
 				my $ref_class = $type->type_parameter->class ;
-				$doc->{$name} = bless { with_class=>$ref_class, children=>$ref_arr, buffer=>{} } => $class;
+				$doc->{$name} = bless {
+					class=>$class_main, field=>$name, parent=>$doc->{_id},
+					with_class=>$ref_class, children=>$ref_arr, buffer=>{} } => $class;
 			}
 		}
 		else { #non-moose
@@ -172,7 +224,27 @@ sub expand {
 	return $obj;
 }
 
-sub _unbless {
+sub _joint_fields {
+	my $self = shift;
+	return map { $_->name }
+		grep { 
+			$_->type_constraint->isa('Mongoose::Join')
+		}
+		$self->meta->get_all_attributes ;
+}
+
+sub fix_integrity {
+	my ($self, @fields ) = @_;
+	my $id = $self->_id;
+	@fields = $self->_joint_fields
+		unless scalar @fields;
+	for my $field ( @fields ) {
+		my @children = $self->$field->_children_refs;
+		$self->collection->update( { _id=>$id }, { '$set'=>{ $field=>\@children } } );
+	}
+}
+
+sub _unbless_full {
 	require Data::Structure::Util;
 	Data::Structure::Util::unbless( shift );
 }
@@ -275,6 +347,11 @@ sub _primary_key_from_hash {
 	return { map { $_ => $self->{$_} } @keys };
 }
 
+sub _collection_name {
+	my $self = shift;
+	return $self->meta->{mongoose_config}->{collection_name} ;
+}
+
 sub find {
 	my ($self,$query,$attrs) = @_;
 	my $cursor = bless $self->collection->find($query,$attrs), 'Mongoose::Cursor';
@@ -292,10 +369,10 @@ sub query {
 }
 
 sub find_one {
-	my ($self,$query,$fields, $from) = @_;
+	my ($self,$query,$fields, $scope) = @_;
 	my $doc = $self->collection->find_one( $query, $fields );
 	return undef unless defined $doc;
-	return $self->expand( $doc, $fields, $from );
+	return $self->expand( $doc, $fields, $scope );
 }
 
 =head1 NAME
@@ -354,6 +431,12 @@ Commits the object to the database.
 
 Returns the object's corresponding L<MongoDB::Database> instance.
 
+=head2 fix_integrity
+
+Checks all L<Mongoose::Join> fields for invalid references to 
+foreign object ids.  
+
 =cut 
 
 1;
+

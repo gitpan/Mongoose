@@ -1,6 +1,6 @@
 package Mongoose::Join;
 BEGIN {
-  $Mongoose::Join::VERSION = '0.03';
+  $Mongoose::Join::VERSION = '0.04';
 }
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -27,6 +27,7 @@ Moose::Util::TypeConstraints::add_parameterizable_type(
     $REGISTRY->get_type_constraint('Mongoose::Join') );
 
 has 'class'                 => ( is => 'rw', isa => 'Str' );
+has 'field'                 => ( is => 'rw', isa => 'Str' );
 has 'with_class'            => ( is => 'rw', isa => 'Str' );
 has '_with_collection_name' => ( is => 'rw', isa => 'Str' );
 has 'parent'                => ( is => 'rw', isa => 'MongoDB::OID' );
@@ -126,6 +127,15 @@ sub _save {
     return @objs;
 }
 
+sub _children_refs {
+	my ($self)=@_;
+	my @found;
+	$self->find->each( sub{
+		push @found, { '$id' => $_[0]->{_id}, '$ref' => $_[0]->_collection_name };
+	});
+	return @found;
+}
+
 sub find {
     my ( $self, $opts, @scope ) = @_;
     my $class = $self->with_class;
@@ -164,7 +174,7 @@ Mongoose::Join - simple class relationship resolver
 
 =head1 VERSION
 
-version 0.03
+version 0.04
 
 =head1 SYNOPSIS
 
