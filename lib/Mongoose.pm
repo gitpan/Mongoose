@@ -1,6 +1,6 @@
 package Mongoose;
 BEGIN {
-  $Mongoose::VERSION = '0.04';
+  $Mongoose::VERSION = '0.05';
 }
 use MongoDB;
 use MooseX::Singleton;
@@ -77,7 +77,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.04
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -233,6 +233,7 @@ L<KiokuDB>
 =head1 CONTRIBUTORS
 
 	Arthur Wolf
+    Solli Moreira Honorio (shonorio)
 
 =head1 LICENSE
 

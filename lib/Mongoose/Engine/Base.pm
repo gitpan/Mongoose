@@ -1,9 +1,9 @@
 package Mongoose::Engine::Base;
 BEGIN {
-  $Mongoose::Engine::Base::VERSION = '0.04';
+  $Mongoose::Engine::Base::VERSION = '0.05';
 }
 BEGIN {
-  $Mongoose::Engine::Base::VERSION = '0.03';
+  $Mongoose::Engine::Base::VERSION = '0.04';
 }
 use Moose::Role;
 use Params::Coerce;
@@ -218,8 +218,15 @@ sub expand {
 	return undef unless defined $doc;
 	my $obj = bless $doc => $class_main;
 	for( @later )  {
-		my $meth = $_->{attrib};
-		$obj->$meth($_->{value});
+		my $attr = $class_main->meta->get_attribute($_->{attrib});
+        if( defined $attr ) {
+            # works for read-only values
+            $attr->set_value($obj, $_->{value});
+        } else {
+            # sometimes get_attribute is undef, old method instead:
+            my $meth = $_->{attrib};
+            $obj->$meth($_->{value});
+        }
 	}
 	return $obj;
 }

@@ -37,6 +37,7 @@ t/lib/MyTestApp/Schema/Author.pm
 t/meta_attributes.t
 t/migrate.t
 t/pk.t
+t/read_only.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t
 t/request.t

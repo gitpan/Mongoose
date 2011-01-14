@@ -30,7 +30,7 @@ my %WriteMakefileArgs = (
     'Params::Coerce' => '0',
     'Scalar::Util' => '0'
   },
-  'VERSION' => '0.04',
+  'VERSION' => '0.05',
   'test' => {
     'TESTS' => 't/*.t'
   }
