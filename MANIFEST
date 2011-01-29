@@ -24,6 +24,7 @@ lib/Mongoose/Role/Collapser.pm
 lib/Mongoose/Role/Engine.pm
 lib/Mongoose/Role/Expander.pm
 t/access.t
+t/arrayref_embeddedDocument.t
 t/banking_model.t
 t/basic.t
 t/binary_tree.t
