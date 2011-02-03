@@ -1,6 +1,6 @@
 package Mongoose::Engine::Base;
 BEGIN {
-  $Mongoose::Engine::Base::VERSION = '0.06';
+  $Mongoose::Engine::Base::VERSION = '0.07';
 }
 BEGIN {
   $Mongoose::Engine::Base::VERSION = '0.06';

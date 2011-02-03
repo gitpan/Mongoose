@@ -1,6 +1,6 @@
 package Mongoose::Document;
 BEGIN {
-  $Mongoose::Document::VERSION = '0.06';
+  $Mongoose::Document::VERSION = '0.07';
 }
 use strict;
 use Mongoose;
@@ -8,11 +8,8 @@ use MooseX::Role::Parameterized;
 use Mongoose::Meta::AttributeTraits;
 
 parameter '-engine' => ( isa => 'Mongoose::Role::Engine', );
-
 parameter '-collection_name' => ( isa => 'Str', );
-
 parameter '-pk' => ( isa => 'ArrayRef[Str]', );
-
 parameter '-as' => ( isa => 'Str', );
 
 role {
@@ -22,7 +19,7 @@ role {
 
     my $collection_name = $p->{'-collection_name'} || do {
         # sanitize the class name
-        Mongoose->naming->($class_name);
+        Mongoose->naming->("$class_name");
     };
 
     # load the selected engine
@@ -60,7 +57,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.06
+version 0.07
 
 =head1 SYNOPSIS
 

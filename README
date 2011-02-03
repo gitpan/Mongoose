@@ -2,7 +2,7 @@ NAME
     Mongoose - MongoDB document to Moose object mapper
 
 VERSION
-    version 0.06
+    version 0.07
 
 SYNOPSIS
         package Person;
@@ -45,7 +45,7 @@ METHODS
   db
     Sets the current MongoDB connection and/or db name.
 
-            Mongoose->db( 'myappdb' );
+        Mongoose->db( 'mydb' );
 
     The connection defaults to whatever MongoDB defaults are (typically
     localhost:27017).
@@ -56,11 +56,34 @@ METHODS
         my $db = Mongoose->db(
             host          => 'mongodb://localhost:27017',
             query_timeout => 60,
-            db_name       => 'myapp'
+            db_name       => 'mydb'
         );
 
     This will, in turn, instantiate a MongoDB::Connection instance with all
     given parameters and return a MongoDB::Database object.
+
+    Important: Mongoose will always defer connecting to Mongo until the last
+    possible moment. This is done to prevent using the MongoDB driver in a
+    forked environment (ie. with a prefork appserver like Starman, Hypnotoad
+    or Catalyst's HTTP::Prefork).
+
+    If you prefer to connect while setting the connection string, use one of
+    these 2 options:
+
+        Mongoose->db( db_name=>'mydb', -now=>1 );  # connect now
+
+        # or by wating for a return value
+
+        my $db = Mongoose->db( 'mydb' );
+
+        # or explicitly:
+
+        Mongoose->db( 'mydb' );
+        Mongoose->connect;
+
+  connect
+    Connects to Mongo using the connection arguments passed to the "db"
+    method.
 
   load_schema
     Uses Module::Pluggable to "require" all modules under a given search
@@ -69,24 +92,24 @@ METHODS
     All arguments will be sent to Module::Pluggable's "import", except for
     Mongoose specific ones.
 
-            package main;
-            use Mongoose;
+        package main;
+        use Mongoose;
 
-            # to load a schema from a namespace path:
-            Mongoose->load_schema( search_path=>'MyApp::Schema' );
+        # to load a schema from a namespace path:
+        Mongoose->load_schema( search_path=>'MyApp::Schema' );
 
     This method can be used to shorten class names, aliasing them for
     convenience if you wish:
 
-            Mongoose->load_schema( search_path=>'MyApp::Schema', shorten=>1 );
+        Mongoose->load_schema( search_path=>'MyApp::Schema', shorten=>1 );
 
     Will shorten the module name to it's last bit:
 
-            MyApp::Schema::Author->new( ... );
+        MyApp::Schema::Author->new( ... );
 
-            # becomes
+        # becomes
 
-            Author->new( ... );
+        Author->new( ... );
 
   naming
     By default, Mongoose composes the Mongo collection name from your
@@ -94,8 +117,8 @@ METHODS
     separating camel-case, such as "aB" with "a_b" and uppercase with
     lowercase letters.
 
-    This method let's you change this behaviour, by setting setting the
-    collection naming default sub.
+    This method let's you change this behaviour, by setting the collection
+    naming routine with a "closure".
 
     The closure receives the package name as first parameter and should
     return the collection name.
@@ -105,6 +128,31 @@ METHODS
         #  to plain lowercase
 
         Mongoose->naming( sub { lc(shift) } );
+
+        # if you prefer, use a predefined naming template
+
+        Mongoose->naming( 'plural' );  # my favorite
+
+        # or combine them 
+
+        Mongoose->naming( ['decamel','plural' ] );  # same as 'shorties'
+
+    Here are the templates available:
+
+         template     | package name             |  collection
+        --------------+--------------------------+---------------------------
+         short        | MyApp::Schema::FooBar    |  foobar
+         plural       | MyApp::Schema::FooBar    |  foobars
+         decamel      | MyApp::Schema::FooBar    |  foo_bar
+         lower        | MyApp::Schema::FooBar    |  myapp::schema::author
+         upper        | MyApp::Schema::FooBar    |  MYAPP::SCHEMA::AUTHOR
+         undercolon   | MyApp::Schema::FooBar    |  myapp_schema_foobar
+         default      | MyApp::Schema::FooBar    |  myapp_schema_foo_bar
+         none         | MyApp::Schema::Author    |  MyApp::Schema::Author
+
+    BTW, you can just use the full package name (template "none") as a
+    collection in Mongo, as it won't complain about colons in the collection
+    name.
 
   connection
     Sets/returns the current connection object, of class
@@ -138,10 +186,10 @@ SEE ALSO
     KiokuDB
 
 AUTHOR
-            Rodrigo de Oliveira (rodrigolive), C<rodrigolive@gmail.com>
+        Rodrigo de Oliveira (rodrigolive), C<rodrigolive@gmail.com>
 
 CONTRIBUTORS
-            Arthur Wolf
+        Arthur Wolf
         Solli Moreira Honorio (shonorio)
 
 LICENSE
