@@ -1,6 +1,6 @@
 package Mongoose::Document;
 BEGIN {
-  $Mongoose::Document::VERSION = '0.07';
+  $Mongoose::Document::VERSION = '0.08';
 }
 use strict;
 use Mongoose;
@@ -31,7 +31,7 @@ role {
 
     # attributes
     has '_id' =>
-      ( is => 'rw', isa => 'MongoDB::OID', traits => ['DoNotSerialize'] );
+      ( is => 'rw', isa => 'MongoDB::OID', traits => ['DoNotMongoSerialize'] );
 
     my $config = {
         pk              => $p->{'-pk'},
@@ -57,7 +57,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 

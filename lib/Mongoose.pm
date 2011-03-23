@@ -1,6 +1,6 @@
 package Mongoose;
 BEGIN {
-  $Mongoose::VERSION = '0.07';
+  $Mongoose::VERSION = '0.08';
 }
 use MongoDB;
 use MooseX::Singleton;
@@ -131,7 +131,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.07
+version 0.08
 
 =head1 SYNOPSIS
 
@@ -300,6 +300,10 @@ Sets/returns the current connection object, of class L<MongoDB::Connection>.
 
 Defaults to whatever MongoDB defaults.
 
+=head2 disconnect
+
+Unsets the Mongoose connection handler. 
+
 =head1 REPOSITORY
 
 Fork me on github: L<http://github.com/rodrigolive/mongoose>
@@ -336,6 +340,7 @@ L<KiokuDB>
 
     Arthur Wolf
     Solli Moreira Honorio (shonorio)
+    Michael Gentili (gentili)
 
 =head1 LICENSE
 
