@@ -1,6 +1,6 @@
 package Mongoose::File;
 BEGIN {
-  $Mongoose::File::VERSION = '0.08';
+  $Mongoose::File::VERSION = '0.09';
 }
 use Moose;
 
@@ -20,7 +20,7 @@ Mongoose::File - wrapper for MongoDB::GridFS::File
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 

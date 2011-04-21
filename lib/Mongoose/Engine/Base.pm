@@ -1,6 +1,6 @@
 package Mongoose::Engine::Base;
 BEGIN {
-  $Mongoose::Engine::Base::VERSION = '0.08';
+  $Mongoose::Engine::Base::VERSION = '0.09';
 }
 BEGIN {
   $Mongoose::Engine::Base::VERSION = '0.06';
@@ -25,7 +25,7 @@ sub collapse {
         #say "----CIRC=$duplicate";
         my $class = blessed $duplicate;
         my $ref_id = $duplicate->_id;
-        return undef unless defined $class;
+        return undef unless defined $class && $ref_id;
         return { '$ref' => $class->meta->{mongoose_config}->{collection_name}, '$id'=>$ref_id };
     }
     my $packed = { %$self }; # cheesely clone the data
@@ -305,6 +305,22 @@ sub save {
             # save without pk
             my $id = $coll->save( $doc );
             $self->_id( $id );
+
+            # if there are any new, unsaved, documents in the scope,
+            # we have circular relation between $self and @scope
+            my @unsaved;
+            for my $x (@scope) {
+                unless($x->_id) {
+                    push @unsaved, $x;
+                }
+            }
+            if (@unsaved) {
+                while (my $x = pop(@unsaved)) {
+                    $x->save(@unsaved);
+                }
+                $self->save(@scope);
+            }
+
             return $id;
         }
     }

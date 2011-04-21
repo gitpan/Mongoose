@@ -1,6 +1,6 @@
 package Mongoose;
 BEGIN {
-  $Mongoose::VERSION = '0.08';
+  $Mongoose::VERSION = '0.09';
 }
 use MongoDB;
 use MooseX::Singleton;
@@ -131,7 +131,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 
@@ -170,12 +170,6 @@ which is in turn loosely based on the ActiveRecord pattern.
 Start by reading the introduction L<Mongoose::Intro>. 
 
 Or proceed directly to the L<Mongoose::Cookbook> for many day-to-day recipes.
-
-=begin html
-
-<img src="http://cpansearch.perl.org/src/RODRIGO/Mongoose-0.01/etc/mongoose_icon.png" />
-
-=end html
 
 =head1 METHODS
 
@@ -341,6 +335,7 @@ L<KiokuDB>
     Arthur Wolf
     Solli Moreira Honorio (shonorio)
     Michael Gentili (gentili)
+    Kang-min Liu (gugod)
 
 =head1 LICENSE
 

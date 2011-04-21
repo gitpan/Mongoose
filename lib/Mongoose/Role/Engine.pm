@@ -1,6 +1,6 @@
 package Mongoose::Role::Engine;
 BEGIN {
-  $Mongoose::Role::Engine::VERSION = '0.08';
+  $Mongoose::Role::Engine::VERSION = '0.09';
 }
 use Moose::Role;
 
@@ -17,7 +17,7 @@ Mongoose::Role::Engine
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 DESCRIPTION
 

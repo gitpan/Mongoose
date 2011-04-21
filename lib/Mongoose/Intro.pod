@@ -7,7 +7,7 @@ Mongoose::Intro - an introduction
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 MOTIVATION
 
@@ -418,11 +418,11 @@ into the new schema.  This will be probably fixed soon.
 On the meanwhile, you can always invoke an "alignment"
 method after loading the data, or do a bulk migration:
 
-	Author->find->each( sub{
-		my $obj = shift;
-		$obj->first_name( delete $obj->{name} );
-		$obj->save;
-	});
+    Author->find->each( sub{
+        my $obj = shift;
+        $obj->first_name( delete $obj->{name} );
+        $obj->save;
+    });
     
 =head1 SEE ALSO
 
