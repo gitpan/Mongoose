@@ -1,6 +1,6 @@
 package Mongoose;
 BEGIN {
-  $Mongoose::VERSION = '0.09';
+  $Mongoose::VERSION = '0.10';
 }
 use MongoDB;
 use MooseX::Singleton;
@@ -131,7 +131,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.09
+version 0.10
 
 =head1 SYNOPSIS
 
