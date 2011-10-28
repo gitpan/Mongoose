@@ -28,6 +28,7 @@ t/arrayref_embeddedDocument.t
 t/banking_model.t
 t/basic.t
 t/binary_tree.t
+t/class.t
 t/config.t
 t/embed.t
 t/file/in.txt

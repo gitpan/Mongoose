@@ -1,6 +1,6 @@
 package Mongoose::Document;
-BEGIN {
-  $Mongoose::Document::VERSION = '0.10';
+{
+  $Mongoose::Document::VERSION = '0.11';
 }
 use strict;
 use Mongoose;
@@ -57,7 +57,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 

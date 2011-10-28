@@ -1,11 +1,11 @@
 package Mongoose::Meta::AttributeTraits;
-BEGIN {
-  $Mongoose::Meta::AttributeTraits::VERSION = '0.10';
+{
+  $Mongoose::Meta::AttributeTraits::VERSION = '0.11';
 }
 
 package Mongoose::Meta::Attribute::Trait::Binary;
-BEGIN {
-  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.10';
+{
+  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.11';
 }
 use strict;
 use Moose::Role;
@@ -25,8 +25,8 @@ has 'lazy_select' => (
 
 {
     package Moose::Meta::Attribute::Custom::Trait::Binary;
-BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.10';
+{
+  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.11';
 }
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::Binary'}
 }
@@ -34,8 +34,8 @@ BEGIN {
 # -----------------------------------------------------------------
 
 package Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize;
-BEGIN {
-  $Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize::VERSION = '0.10';
+{
+  $Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize::VERSION = '0.11';
 }
 use strict;
 use Moose::Role;
@@ -55,8 +55,8 @@ has 'lazy_select' => (
 
 {
     package Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize;
-BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize::VERSION = '0.10';
+{
+  $Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize::VERSION = '0.11';
 }
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize'}
 }
@@ -65,16 +65,16 @@ BEGIN {
 
 {
     package Mongoose::Meta::Attribute::Trait::Raw;
-BEGIN {
-  $Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.10';
+{
+  $Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.11';
 }
     use strict;
     use Moose::Role;
 }
 {
     package Moose::Meta::Attribute::Custom::Trait::Raw;
-BEGIN {
-  $Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.10';
+{
+  $Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.11';
 }
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::Raw'}
 }
@@ -85,7 +85,7 @@ Mongoose::Meta::AttributeTraits - Mongoose related attribute traits
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 DESCRIPTION
 

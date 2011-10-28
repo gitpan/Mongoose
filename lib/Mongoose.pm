@@ -1,6 +1,6 @@
 package Mongoose;
-BEGIN {
-  $Mongoose::VERSION = '0.10';
+{
+  $Mongoose::VERSION = '0.11';
 }
 use MongoDB;
 use MooseX::Singleton;
@@ -81,7 +81,7 @@ sub connect {
     my $self = shift;
     my %p    = @_ || %{ $self->_args };
     my $key  = delete( $p{'-class'} ) || 'default';
-    $self->_connection( MongoDB::Connection->new(@_) )
+    $self->_connection( MongoDB::Connection->new(%p) )
       unless ref $self->_connection;
     $self->_db( { $key => $self->_connection->get_database( $p{db_name} ) } );
     return $self->_db->{$key};
@@ -131,7 +131,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.10
+version 0.11
 
 =head1 SYNOPSIS
 
@@ -336,6 +336,7 @@ L<KiokuDB>
     Solli Moreira Honorio (shonorio)
     Michael Gentili (gentili)
     Kang-min Liu (gugod)
+    Allan Whiteford (allanwhiteford)
 
 =head1 LICENSE
 
