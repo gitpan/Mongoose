@@ -23,7 +23,9 @@ lib/Mongoose/Meta/AttributeTraits.pm
 lib/Mongoose/Role/Collapser.pm
 lib/Mongoose/Role/Engine.pm
 lib/Mongoose/Role/Expander.pm
+pp
 t/access.t
+t/after-save.t
 t/arrayref_embeddedDocument.t
 t/banking_model.t
 t/basic.t
@@ -43,6 +45,7 @@ t/read_only.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t
 t/request.t
+t/rolerole.t
 t/roles.t
 t/schema.t
 t/traits.t

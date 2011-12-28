@@ -1,6 +1,6 @@
 package Mongoose::Engine::Base;
 {
-  $Mongoose::Engine::Base::VERSION = '0.11';
+  $Mongoose::Engine::Base::VERSION = '0.12';
 }
 BEGIN {
   $Mongoose::Engine::Base::VERSION = '0.06';
@@ -71,7 +71,7 @@ sub collapse {
                 if( $aryclass && $aryclass->does('Mongoose::EmbeddedDocument') ) {
                     push @docs, $_->collapse(@scope, $self);
                 } elsif( $aryclass && $aryclass->does('Mongoose::Document') ) {
-                    $_->save( @scope, $self );
+                    $_->_save( @scope, $self );
                     my $id = $_->_id;
                     push @docs, { '$ref' => $aryclass->meta->{mongoose_config}->{collection_name}, '$id'=>$id };
                 } else {
@@ -99,8 +99,10 @@ sub _unbless {
         }
         elsif( $class->does('Mongoose::Document') ) {
             #say 'saving...: ', join',',$self,$obj,$class,'.',@scope;
-            $obj->save( @scope, $self );
+
+            $obj->_save( @scope, $self );
             my $id = $obj->_id;
+
             $ret = { '$ref' => $class->meta->{mongoose_config}->{collection_name}, '$id'=>$id };
         }
         elsif( $class->isa('Mongoose::Join') ) {
@@ -283,6 +285,10 @@ sub _unbless_full {
 }
 
 sub save {
+    &_save(@_);
+}
+
+sub _save {
     my ($self, @scope )=@_;
     my $coll = $self->collection;
     my $doc = $self->collapse( @scope );
@@ -314,11 +320,12 @@ sub save {
                     push @unsaved, $x;
                 }
             }
+
             if (@unsaved) {
                 while (my $x = pop(@unsaved)) {
-                    $x->save(@unsaved);
+                    $x->_save(@unsaved);
                 }
-                $self->save(@scope);
+                $self->_save;
             }
 
             return $id;
@@ -439,7 +446,7 @@ Mongoose::Engine::Base - heavy lifting done here
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 DESCRIPTION
 

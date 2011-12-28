@@ -1,6 +1,6 @@
 package Mongoose::Document;
 {
-  $Mongoose::Document::VERSION = '0.11';
+  $Mongoose::Document::VERSION = '0.12';
 }
 use strict;
 use Mongoose;
@@ -15,7 +15,33 @@ parameter '-as' => ( isa => 'Str', );
 role {
     my $p          = shift;
     my %args       = @_;
-    my $class_name = $args{consumer}->name;
+    my $class_name;
+    if ($args{consumer}->isa('Moose::Meta::Class'))
+    {
+    	$class_name=$args{consumer}->name;
+    }
+    else
+    {
+    	my $i=1;
+	while ( my @caller = do { package DB;
+{
+  $DB::VERSION = '0.12';
+} caller( $i++ ) } )
+	{
+		if ($caller[3] eq "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role")
+		{
+			my @args = @DB::args;
+			my %args=@args[1..$#args];
+			if ($args{'consumer'}->isa('Moose::Meta::Class'))
+			{
+				$class_name=$args{'consumer'}->name;
+				last;
+			}
+		}
+	}
+    }
+
+    die("Cannot find a class name to use") unless($class_name);
 
     my $collection_name = $p->{'-collection_name'} || do {
         # sanitize the class name
@@ -57,7 +83,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.11
+version 0.12
 
 =head1 SYNOPSIS
 
