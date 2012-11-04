@@ -1,12 +1,12 @@
 package Mongoose::EmbeddedDocument;
 {
-  $Mongoose::EmbeddedDocument::VERSION = '0.13';
+  $Mongoose::EmbeddedDocument::VERSION = '0.20';
 }
 use MooseX::Role::Parameterized;
 use Mongoose::Meta::AttributeTraits;
 
-parameter 'engine' => ( isa => 'Mongoose::Role::Engine' );
-parameter 'pk'     => ( isa => 'ArrayRef[Str]' );
+parameter '-engine' => ( isa => 'Mongoose::Role::Engine' );
+parameter '-pk'     => ( isa => 'ArrayRef[Str]' );
 
 role {
 	my $p = shift;
@@ -19,7 +19,7 @@ Mongoose::EmbeddedDocument - role for embedded documents
 
 =head1 VERSION
 
-version 0.13
+version 0.20
 
 =head1 SYNOPSIS
 

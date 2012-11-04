@@ -1,6 +1,6 @@
 package Mongoose::Document;
 {
-  $Mongoose::Document::VERSION = '0.13';
+  $Mongoose::Document::VERSION = '0.20';
 }
 use strict;
 use Mongoose;
@@ -18,27 +18,35 @@ role {
     my $class_name;
     if ($args{consumer}->isa('Moose::Meta::Class'))
     {
-    	$class_name=$args{consumer}->name;
+        $class_name=$args{consumer}->name;
     }
     else
     {
-    	my $i=1;
-	while ( my @caller = do { package DB;
+        # If we get into this block of code, it means that Mongoose was consumed
+        # not by a class but by another (intermediate) role. Mongoose needs to 
+        # know the original class for various reasons (naming the collection
+        # name being the most obvious one but not the only one).
+        # What follows is an ugly hack to climb back up the consumption hierarchy
+        # to find out the name of the class which was originally used. If anyone
+        # can do it differently than it has to be better than the below!
+        #                                              -- Allan Whiteford
+        my $i=1;
+        while ( my @caller = do { package DB;
 {
-  $DB::VERSION = '0.13';
+  $DB::VERSION = '0.20';
 } caller( $i++ ) } )
-	{
-		if ($caller[3] eq "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role")
-		{
-			my @args = @DB::args;
-			my %args=@args[1..$#args];
-			if ($args{'consumer'}->isa('Moose::Meta::Class'))
-			{
-				$class_name=$args{'consumer'}->name;
-				last;
-			}
-		}
-	}
+        {
+            if ($caller[3] eq "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role")
+            {
+                my @args = @DB::args;
+                my %args=@args[1..$#args];
+                if ($args{'consumer'}->isa('Moose::Meta::Class'))
+                {
+                    $class_name=$args{'consumer'}->name;
+                    last;
+                }
+            }
+        }
     }
 
     die("Cannot find a class name to use") unless($class_name);
@@ -83,7 +91,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.13
+version 0.20
 
 =head1 SYNOPSIS
 
@@ -94,7 +102,7 @@ version 0.13
 
 =head1 SEE ALSO
 
-Read the Mongoose L<Mongoose::Intro|intro> or L<Mongoose::Cookbook|cookbook>.
+Read the Mongoose L<intro|Mongoose::Intro> or L<cookbook|Mongoose::Cookbook>.
 
 =cut
 

@@ -9,30 +9,30 @@ use ExtUtils::MakeMaker 6.30;
 
 
 my %WriteMakefileArgs = (
-  'ABSTRACT' => 'MongoDB document to Moose object mapper',
-  'AUTHOR' => 'Rodrigo de Oliveira <rodrigolive@gmail.com>',
-  'BUILD_REQUIRES' => {},
-  'CONFIGURE_REQUIRES' => {
-    'ExtUtils::MakeMaker' => '6.30'
+  "ABSTRACT" => "MongoDB document to Moose object mapper",
+  "AUTHOR" => "Rodrigo de Oliveira <rodrigolive\@gmail.com>",
+  "BUILD_REQUIRES" => {},
+  "CONFIGURE_REQUIRES" => {
+    "ExtUtils::MakeMaker" => "6.30"
   },
-  'DISTNAME' => 'Mongoose',
-  'EXE_FILES' => [],
-  'LICENSE' => 'perl',
-  'NAME' => 'Mongoose',
-  'PREREQ_PM' => {
-    'Carp' => '0',
-    'List::Util' => '0',
-    'Module::Pluggable' => '3.5',
-    'MongoDB' => '0.35',
-    'Moose' => '0.9',
-    'MooseX::Role::Parameterized' => '0.16',
-    'MooseX::Singleton' => '0',
-    'Params::Coerce' => '0',
-    'Scalar::Util' => '0'
+  "DISTNAME" => "Mongoose",
+  "EXE_FILES" => [],
+  "LICENSE" => "perl",
+  "NAME" => "Mongoose",
+  "PREREQ_PM" => {
+    "Carp" => 0,
+    "List::Util" => 0,
+    "Module::Pluggable" => "3.5",
+    "MongoDB" => "0.35",
+    "Moose" => "0.9",
+    "MooseX::Role::Parameterized" => "0.16",
+    "MooseX::Singleton" => 0,
+    "Params::Coerce" => 0,
+    "Scalar::Util" => 0
   },
-  'VERSION' => '0.13',
-  'test' => {
-    'TESTS' => 't/*.t'
+  "VERSION" => "0.20",
+  "test" => {
+    "TESTS" => "t/*.t"
   }
 );
 
