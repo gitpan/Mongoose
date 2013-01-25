@@ -22,8 +22,9 @@ requires:
   MooseX::Singleton: 0
   Params::Coerce: 0
   Scalar::Util: 0
+  version: 0
 resources:
-  bugtracker: http://rt.cpan.org/Public/Dist/Display.html?Name=Mongoose
+  bugtracker: http://github.com/rodrigolive/mongoose/issues
   homepage: http://search.cpan.org/perldoc?Mongoose
   repository: git://github.com/rodrigolive/mongoose.git
-version: 0.20
+version: 0.21

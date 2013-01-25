@@ -1,22 +1,30 @@
 package Mongoose;
 {
-  $Mongoose::VERSION = '0.20';
+  $Mongoose::VERSION = '0.21';
 }
 use MongoDB;
+use Class::MOP;
 use MooseX::Singleton;
 use Mongoose::Join;
 use Mongoose::File;
 use Mongoose::Meta::AttributeTraits;
-use MongoDB::Connection;
 use Moose::Util::TypeConstraints;
-class_type 'MongoDB::Connection';
+
+# determine if we are on MongoDB 0.503.1
+require version;
+our $_mongodb_client_class = 
+    version::qv( $MongoDB::VERSION ) >= v0.502.0
+        ? 'MongoDB::MongoClient'
+        : 'MongoDB::Connection';
+
+class_type $_mongodb_client_class;
 use Carp;
 
 has '_db' => ( is => 'rw', isa => 'HashRef[MongoDB::Database]' );
 
 has '_connection' => (
     is  => 'rw',
-    isa => 'MongoDB::Connection | Undef',
+    isa => $_mongodb_client_class . ' | Undef',
 );
 
 has '_args' => ( is => 'rw', isa => 'HashRef', default=>sub{{}} );
@@ -83,7 +91,7 @@ sub connect {
     my $self = shift;
     my %p    = @_ || %{ $self->_args };
     my $key  = delete( $p{'-class'} ) || 'default';
-    $self->_connection( MongoDB::Connection->new(%p) )
+    $self->_connection( $_mongodb_client_class->new(%p) )
       unless ref $self->_connection;
     $self->_db( { $key => $self->_connection->get_database( $p{db_name} ) } );
     return $self->_db->{$key};
@@ -119,8 +127,8 @@ sub load_schema {
             my $short_name = $1;
             no strict 'refs';
             *{ $short_name . "::" } = \*{ $module . "::" };
-            $short_name->meta->{mongoose_config} =
-              $module->meta->{mongoose_config};
+            Class::MOP::store_metaclass_by_name( $short_name, $module->meta );
+            Class::MOP::weaken_metaclass( $short_name );
         }
     }
 }
@@ -133,7 +141,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.20
+version 0.21
 
 =head1 SYNOPSIS
 
@@ -185,7 +193,7 @@ The connection defaults to whatever MongoDB defaults are
 (typically localhost:27017).
 
 For more control over the connection, C<db> takes the same parameters as
-L<MongoDB::Connection>, plus C<db_name>. 
+L<MongoDB::MongoClient>, plus C<db_name>. 
 
     my $db = Mongoose->db(
         host          => 'mongodb://localhost:27017',
@@ -193,7 +201,7 @@ L<MongoDB::Connection>, plus C<db_name>.
         db_name       => 'mydb'
     );
 
-This will, in turn, instantiate a L<MongoDB::Connection> instance
+This will, in turn, instantiate a L<MongoDB::MongoClient> instance
 with all given parameters and return a L<MongoDB::Database> object. 
 
 B<Important>: Mongoose will always defer connecting to Mongo
@@ -292,7 +300,7 @@ in Mongo, as it won't complain about colons in the collection name.
 
 =head2 connection
 
-Sets/returns the current connection object, of class L<MongoDB::Connection>.
+Sets/returns the current connection object, of class L<MongoDB::MongoClient>.
 
 Defaults to whatever MongoDB defaults.
 
@@ -306,9 +314,10 @@ Fork me on github: L<http://github.com/rodrigolive/mongoose>
 
 =head1 BUGS
 
-This is a WIP, barely *beta* quality software. 
+This is a WIP, now *beta* quality software. 
 
-Report bugs via RT. Send me test cases.
+Report bugs via Github Issue reporting L<https://github.com/rodrigolive/mongoose/issues>.
+Test cases highly desired and appreciated.
 
 =head1 TODO
 
@@ -340,6 +349,7 @@ L<KiokuDB>
     Kang-min Liu (gugod)
     Allan Whiteford (allanwhiteford)
     Kartik Thakore (kthakore)
+    David Golden (dagolden)
 
 =head1 LICENSE
 

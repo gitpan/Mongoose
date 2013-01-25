@@ -7,7 +7,7 @@ use lib 't/lib';
 use MongooseT; # connects to the db for me
 
 my $db = db;
-$db->author->drop;
+$db->get_collection('author')->drop;
 
 Mongoose->load_schema( search_path=>'MyTestApp::Schema', shorten=>1 );
 
@@ -20,5 +20,8 @@ $au->save;
 #});
 
 is ref($au), 'MyTestApp::Schema::Author', 'schema found';
+
+my $au2 = Author->find_one( {name =>'Bob'} );
+is $au->timestamp, $au2->timestamp, "roundtrip";
 
 done_testing;
