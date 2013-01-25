@@ -1,6 +1,6 @@
 package Mongoose::Document;
 {
-  $Mongoose::Document::VERSION = '0.21';
+  $Mongoose::Document::VERSION = '0.22';
 }
 use strict;
 use Mongoose;
@@ -33,7 +33,7 @@ role {
         my $i=1;
         while ( my @caller = do { package DB;
 {
-  $DB::VERSION = '0.21';
+  $DB::VERSION = '0.22';
 } caller( $i++ ) } )
         {
             if ($caller[3] eq "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role")
@@ -91,7 +91,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.21
+version 0.22
 
 =head1 SYNOPSIS
 

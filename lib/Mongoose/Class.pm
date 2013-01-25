@@ -1,6 +1,6 @@
 package Mongoose::Class;
 {
-  $Mongoose::Class::VERSION = '0.21';
+  $Mongoose::Class::VERSION = '0.22';
 }
 use Moose ();
 use Moose::Exporter;
@@ -53,7 +53,7 @@ Mongoose::Class - sugary Mongoose-oriented replacement for Moose
 
 =head1 VERSION
 
-version 0.21
+version 0.22
 
 =head1 SYNOPSIS
 

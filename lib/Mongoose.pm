@@ -1,6 +1,6 @@
 package Mongoose;
 {
-  $Mongoose::VERSION = '0.21';
+  $Mongoose::VERSION = '0.22';
 }
 use MongoDB;
 use Class::MOP;
@@ -141,7 +141,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.21
+version 0.22
 
 =head1 SYNOPSIS
 
