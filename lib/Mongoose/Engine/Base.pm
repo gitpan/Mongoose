@@ -1,6 +1,6 @@
 package Mongoose::Engine::Base;
 {
-  $Mongoose::Engine::Base::VERSION = '0.22';
+  $Mongoose::Engine::Base::VERSION = '0.23';
 }
 
 use Moose::Role;
@@ -454,7 +454,7 @@ Mongoose::Engine::Base - heavy lifting done here
 
 =head1 VERSION
 
-version 0.22
+version 0.23
 
 =head1 DESCRIPTION
 

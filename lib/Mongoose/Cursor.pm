@@ -1,6 +1,6 @@
 package Mongoose::Cursor;
 {
-  $Mongoose::Cursor::VERSION = '0.22';
+  $Mongoose::Cursor::VERSION = '0.23';
 }
 use Moose;
 use MongoDB;
@@ -65,7 +65,7 @@ Mongoose::Cursor - a Mongoose wrapper for MongoDB::Cursor
 
 =head1 VERSION
 
-version 0.22
+version 0.23
 
 =head1 DESCRIPTION
 

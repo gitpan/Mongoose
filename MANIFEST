@@ -40,8 +40,10 @@ t/join-deep.t
 t/join.t
 t/lib/MongooseT.pm
 t/lib/MyTestApp/Schema/Author.pm
+t/lib/MyTestApp/Schema/Post.pm
 t/meta_attributes.t
 t/migrate.t
+t/multi_client.t
 t/pk.t
 t/read_only.t
 t/release-pod-coverage.t
