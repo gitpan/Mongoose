@@ -1,7 +1,5 @@
 package Mongoose;
-{
-  $Mongoose::VERSION = '0.23';
-}
+$Mongoose::VERSION = '0.24';
 use MongoDB;
 use Class::MOP;
 use MooseX::Singleton;
@@ -130,7 +128,7 @@ sub connect {
     my ( $self, $name ) = @_;
     $name ||= 'default';
     my %p   = %{ $self->_args->{db}{$name} };
-    my $db_name = delete $p{db_name};
+    my $db_name = $p{db_name};
 
     $self->_client->{$name} = $_mongodb_client_class->new(%p)
       unless ref $self->_client->{$name};
@@ -172,7 +170,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.23
+version 0.24
 
 =head1 SYNOPSIS
 

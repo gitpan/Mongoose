@@ -1,12 +1,7 @@
 package Mongoose::Meta::AttributeTraits;
-{
-  $Mongoose::Meta::AttributeTraits::VERSION = '0.23';
-}
-
+$Mongoose::Meta::AttributeTraits::VERSION = '0.24';
 package Mongoose::Meta::Attribute::Trait::Binary;
-{
-  $Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.23';
-}
+$Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.24';
 use strict;
 use Moose::Role;
 
@@ -25,18 +20,14 @@ has 'lazy_select' => (
 
 {
     package Moose::Meta::Attribute::Custom::Trait::Binary;
-{
-  $Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.23';
-}
+$Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.24';
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::Binary'}
 }
 
 # -----------------------------------------------------------------
 
 package Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize;
-{
-  $Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize::VERSION = '0.23';
-}
+$Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize::VERSION = '0.24';
 use strict;
 use Moose::Role;
 
@@ -55,9 +46,7 @@ has 'lazy_select' => (
 
 {
     package Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize;
-{
-  $Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize::VERSION = '0.23';
-}
+$Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize::VERSION = '0.24';
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize'}
 }
 
@@ -65,17 +54,13 @@ has 'lazy_select' => (
 
 {
     package Mongoose::Meta::Attribute::Trait::Raw;
-{
-  $Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.23';
-}
+$Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.24';
     use strict;
     use Moose::Role;
 }
 {
     package Moose::Meta::Attribute::Custom::Trait::Raw;
-{
-  $Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.23';
-}
+$Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.24';
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::Raw'}
 }
 
@@ -85,7 +70,7 @@ Mongoose::Meta::AttributeTraits - Mongoose related attribute traits
 
 =head1 VERSION
 
-version 0.23
+version 0.24
 
 =head1 DESCRIPTION
 

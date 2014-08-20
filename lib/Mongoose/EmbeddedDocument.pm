@@ -1,7 +1,5 @@
 package Mongoose::EmbeddedDocument;
-{
-  $Mongoose::EmbeddedDocument::VERSION = '0.23';
-}
+$Mongoose::EmbeddedDocument::VERSION = '0.24';
 use MooseX::Role::Parameterized;
 use Mongoose::Meta::AttributeTraits;
 
@@ -19,7 +17,7 @@ Mongoose::EmbeddedDocument - role for embedded documents
 
 =head1 VERSION
 
-version 0.23
+version 0.24
 
 =head1 SYNOPSIS
 

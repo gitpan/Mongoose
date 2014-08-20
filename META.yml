@@ -6,7 +6,7 @@ build_requires: {}
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 4.300021, CPAN::Meta::Converter version 2.120921'
+generated_by: 'Dist::Zilla version 5.019, CPAN::Meta::Converter version 2.120921'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -14,6 +14,7 @@ meta-spec:
 name: Mongoose
 requires:
   Carp: 0
+  Class::Load: 0
   List::Util: 0
   Module::Pluggable: 3.5
   MongoDB: 0.35
@@ -27,4 +28,4 @@ resources:
   bugtracker: http://github.com/rodrigolive/mongoose/issues
   homepage: http://search.cpan.org/perldoc?Mongoose
   repository: git://github.com/rodrigolive/mongoose.git
-version: 0.23
+version: 0.24

@@ -1,11 +1,10 @@
 package Mongoose::Document;
-{
-  $Mongoose::Document::VERSION = '0.23';
-}
+$Mongoose::Document::VERSION = '0.24';
 use strict;
 use Mongoose;
 use MooseX::Role::Parameterized;
 use Mongoose::Meta::AttributeTraits;
+use Class::Load;
 
 parameter '-engine' => ( isa => 'Mongoose::Role::Engine', );
 parameter '-collection_name' => ( isa => 'Str', );
@@ -32,11 +31,10 @@ role {
         #                                              -- Allan Whiteford
         my $i=1;
         while ( my @caller = do { package DB;
-{
-  $DB::VERSION = '0.23';
-} caller( $i++ ) } )
+$DB::VERSION = '0.24'; caller( $i++ ) } )
         {
-            if ($caller[3] eq "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role")
+            if ($caller[3] eq "MooseX::Role::Parameterized::Meta::Trait::Parameterizable::generate_role"
+            ||  $caller[3] eq "MooseX::Role::Parameterized::Meta::Role::Parameterizable::generate_role") #old
             {
                 my @args = @DB::args;
                 my %args=@args[1..$#args];
@@ -58,7 +56,7 @@ role {
 
     # load the selected engine
     my $engine = $p->{'-engine'} || 'Mongoose::Engine::Base';
-    Class::MOP::load_class($engine);
+    Class::Load::load_class($engine);
 
     # import the engine role into this class
     with $engine;
@@ -91,7 +89,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.23
+version 0.24
 
 =head1 SYNOPSIS
 

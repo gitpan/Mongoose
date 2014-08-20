@@ -1,8 +1,5 @@
 package Mongoose::Engine::Base;
-{
-  $Mongoose::Engine::Base::VERSION = '0.23';
-}
-
+$Mongoose::Engine::Base::VERSION = '0.24';
 use Moose::Role;
 use Params::Coerce;
 use Scalar::Util qw/refaddr reftype/;
@@ -23,6 +20,7 @@ sub collapse {
         my $class = blessed $duplicate;
         my $ref_id = $duplicate->_id;
         return undef unless defined $class && $ref_id;
+        return undef if $self->_id && $self->_id eq $ref_id; # prevent self references?
         return { '$ref' => $class->meta->{mongoose_config}->{collection_name}, '$id'=>$ref_id };
     }
     my $packed = { %$self }; # cheesely clone the data
@@ -454,7 +452,7 @@ Mongoose::Engine::Base - heavy lifting done here
 
 =head1 VERSION
 
-version 0.23
+version 0.24
 
 =head1 DESCRIPTION
 

@@ -1,7 +1,5 @@
 package Mongoose::Role::Engine;
-{
-  $Mongoose::Role::Engine::VERSION = '0.23';
-}
+$Mongoose::Role::Engine::VERSION = '0.24';
 use Moose::Role;
 
 requires 'save';
@@ -17,7 +15,7 @@ Mongoose::Role::Engine
 
 =head1 VERSION
 
-version 0.23
+version 0.24
 
 =head1 DESCRIPTION
 

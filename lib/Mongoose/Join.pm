@@ -1,7 +1,5 @@
 package Mongoose::Join;
-{
-  $Mongoose::Join::VERSION = '0.23';
-}
+$Mongoose::Join::VERSION = '0.24';
 use Moose;
 use Moose::Util::TypeConstraints;
 use Moose::Meta::TypeConstraint::Parameterizable;
@@ -210,7 +208,7 @@ Mongoose::Join - simple class relationship resolver
 
 =head1 VERSION
 
-version 0.23
+version 0.24
 
 =head1 SYNOPSIS
 
