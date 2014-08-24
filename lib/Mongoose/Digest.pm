@@ -1,5 +1,5 @@
 package Mongoose::Digest;
-$Mongoose::Digest::VERSION = '0.25';
+$Mongoose::Digest::VERSION = '0.26';
 use Moose;
 use Digest::SHA;
 
@@ -35,7 +35,7 @@ Mongoose::Digest - deprecated persistance document state keeper
 
 =head1 VERSION
 
-version 0.25
+version 0.26
 
 =head1 DESCRIPTION
 

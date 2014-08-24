@@ -1,5 +1,5 @@
 package Mongoose::Engine::Base;
-$Mongoose::Engine::Base::VERSION = '0.25';
+$Mongoose::Engine::Base::VERSION = '0.26';
 use Moose::Role;
 use Params::Coerce;
 use Scalar::Util qw/refaddr reftype/;
@@ -452,7 +452,7 @@ Mongoose::Engine::Base - heavy lifting done here
 
 =head1 VERSION
 
-version 0.25
+version 0.26
 
 =head1 DESCRIPTION
 
