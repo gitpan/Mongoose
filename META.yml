@@ -28,4 +28,4 @@ resources:
   bugtracker: http://github.com/rodrigolive/mongoose/issues
   homepage: http://search.cpan.org/perldoc?Mongoose
   repository: git://github.com/rodrigolive/mongoose.git
-version: 0.26
+version: 0.27

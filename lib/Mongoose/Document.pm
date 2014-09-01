@@ -1,5 +1,5 @@
 package Mongoose::Document;
-$Mongoose::Document::VERSION = '0.26';
+$Mongoose::Document::VERSION = '0.27';
 use strict;
 use Mongoose;
 use MooseX::Role::Parameterized;
@@ -89,7 +89,7 @@ Mongoose::Document - a Mongo document role
 
 =head1 VERSION
 
-version 0.26
+version 0.27
 
 =head1 SYNOPSIS
 

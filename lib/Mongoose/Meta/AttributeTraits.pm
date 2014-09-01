@@ -1,7 +1,7 @@
 package Mongoose::Meta::AttributeTraits;
-$Mongoose::Meta::AttributeTraits::VERSION = '0.26';
+$Mongoose::Meta::AttributeTraits::VERSION = '0.27';
 package Mongoose::Meta::Attribute::Trait::Binary;
-$Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.26';
+$Mongoose::Meta::Attribute::Trait::Binary::VERSION = '0.27';
 use strict;
 use Moose::Role;
 
@@ -20,14 +20,14 @@ has 'lazy_select' => (
 
 {
     package Moose::Meta::Attribute::Custom::Trait::Binary;
-$Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.26';
+$Moose::Meta::Attribute::Custom::Trait::Binary::VERSION = '0.27';
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::Binary'}
 }
 
 # -----------------------------------------------------------------
 
 package Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize;
-$Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize::VERSION = '0.26';
+$Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize::VERSION = '0.27';
 use strict;
 use Moose::Role;
 
@@ -46,7 +46,7 @@ has 'lazy_select' => (
 
 {
     package Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize;
-$Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize::VERSION = '0.26';
+$Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize::VERSION = '0.27';
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::DoNotMongoSerialize'}
 }
 
@@ -54,13 +54,13 @@ $Moose::Meta::Attribute::Custom::Trait::DoNotMongoSerialize::VERSION = '0.26';
 
 {
     package Mongoose::Meta::Attribute::Trait::Raw;
-$Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.26';
+$Mongoose::Meta::Attribute::Trait::Raw::VERSION = '0.27';
     use strict;
     use Moose::Role;
 }
 {
     package Moose::Meta::Attribute::Custom::Trait::Raw;
-$Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.26';
+$Moose::Meta::Attribute::Custom::Trait::Raw::VERSION = '0.27';
     sub register_implementation {'Mongoose::Meta::Attribute::Trait::Raw'}
 }
 
@@ -70,7 +70,7 @@ Mongoose::Meta::AttributeTraits - Mongoose related attribute traits
 
 =head1 VERSION
 
-version 0.26
+version 0.27
 
 =head1 DESCRIPTION
 

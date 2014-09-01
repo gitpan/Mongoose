@@ -1,5 +1,5 @@
 package Mongoose;
-$Mongoose::VERSION = '0.26';
+$Mongoose::VERSION = '0.27';
 use MongoDB;
 use Class::MOP;
 use MooseX::Singleton;
@@ -128,12 +128,14 @@ sub connect {
     my ( $self, $name ) = @_;
     $name ||= 'default';
     my %p   = %{ $self->_args->{db}{$name} };
-    my $db_name = $p{db_name};
+    my $data_db_name = $p{db_name};
+    my $auth_db_name = delete $p{auth_db_name} || $data_db_name;
+    $p{db_name} = $auth_db_name;    # in MongoDB::Client db_name is auth db, not necessarily data db
 
     $self->_client->{$name} = $_mongodb_client_class->new(%p)
       unless ref $self->_client->{$name};
 
-    $self->_db->{$name} = $self->_client->{$name}->get_database( $db_name );
+    $self->_db->{$name} = $self->_client->{$name}->get_database( $data_db_name );
 }
 
 sub connection {
@@ -170,7 +172,7 @@ Mongoose - MongoDB document to Moose object mapper
 
 =head1 VERSION
 
-version 0.26
+version 0.27
 
 =head1 SYNOPSIS
 
@@ -222,16 +224,22 @@ The connection defaults to whatever MongoDB defaults are
 (typically localhost:27017).
 
 For more control over the connection, C<db> takes the same parameters as
-L<MongoDB::MongoClient>, plus C<db_name>. 
+L<MongoDB::MongoClient>, plus C<auth_db_name>. 
 
     my $db = Mongoose->db(
-        host          => 'mongodb://localhost:27017',
+        host          => 'mongodb://somehost:27017',
         query_timeout => 60,
-        db_name       => 'mydb'
+        db_name       => 'mydb',
+        auth_db_name  => 'admin',
+        username      => 'myuser',
+        password      => 'mypass',
     );
 
-This will, in turn, instantiate a L<MongoDB::MongoClient> instance
-with all given parameters and return a L<MongoDB::Database> object. 
+This will, in turn, instantiate a L<MongoDB::MongoClient> instance after
+authenticating user vs C<admin> with all given parameters, and return
+a L<MongoDB::Database> object for C<mydb>.
+
+C<auth_db_name> defaults to the value of C<db_name>.
 
 B<Important>: Mongoose will always defer connecting to Mongo
 until the last possible moment. This is done to prevent
